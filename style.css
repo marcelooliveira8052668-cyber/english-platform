@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESTILO FUTURÍSTICO & CLEAN - PLATAFORMA DE IDIOMAS
+   ESTILO FUTURÍSTICO & CLEAN - PLATAFORMA DE IDIOMAS (Com Tema de Inglês)
    ========================================================================== */
 * {
     box-sizing: border-box;
@@ -9,10 +9,16 @@
 }
 
 body {
-    background-color: #f8fafc; /* Fundo limpo e claro */
-    color: #1e293b;            /* Texto principal escuro para legibilidade perfeita */
+    /* Fundo com degradê azul-noite e padrão sutil temático */
+    background: 
+        radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 40%),
+        linear-gradient(135deg, #090d16 0%, #101c33 50%, #090d16 100%);
+    background-attachment: fixed;
+    color: #f1f5f9;
     line-height: 1.6;
     padding: 20px;
+    min-height: 100vh;
 }
 
 header {
@@ -21,7 +27,7 @@ header {
 }
 
 header h1 {
-    color: #0284c7;
+    color: #38bdf8;
     font-size: 30px;
     font-weight: 700;
     margin-bottom: 5px;
@@ -29,7 +35,7 @@ header h1 {
 }
 
 header p {
-    color: #64748b;
+    color: #94a3b8;
     font-size: 16px;
 }
 
@@ -41,26 +47,27 @@ header p {
     gap: 25px;
 }
 
-/* CARDS COM ESTILO FUTURÍSTICO E SOMBRAS SUAVES */
-.card {
-    background-color: #ffffff;
+/* CARDS COM ESTILO FUTURÍSTICO, TRANSLÚCIDO E SOMBRAS SUAVES */
+.card, #quiz-container, #result-box, .glossario-box, .main-container {
+    background-color: rgba(30, 41, 59, 0.85); /* Efeito translúcido sofisticado */
+    backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 28px;
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.04);
-    border: 1px solid #e2e8f0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(56, 189, 248, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-    box-shadow: 0 20px 35px -10px rgba(2, 132, 199, 0.1);
-    border-color: #bae6fd;
+    box-shadow: 0 20px 35px -10px rgba(14, 165, 233, 0.2);
+    border-color: rgba(56, 189, 248, 0.4);
 }
 
 .card h2 {
     font-size: 20px;
-    color: #0f172a;
+    color: #f8fafc;
     margin-bottom: 15px;
-    border-bottom: 2px solid #f1f5f9;
+    border-bottom: 2px solid rgba(51, 65, 85, 0.8);
     padding-bottom: 10px;
 }
 
@@ -74,25 +81,25 @@ header p {
     max-height: 260px;
     object-fit: cover;
     border-radius: 12px;
-    border: 2px solid #e2e8f0;
+    border: 2px solid rgba(56, 189, 248, 0.2);
 }
 
 .image-caption {
     font-size: 13px;
-    color: #64748b;
+    color: #94a3b8;
     display: block;
     margin-top: 8px;
     font-style: italic;
 }
 
 .story-content {
-    background-color: #f8fafc;
+    background-color: rgba(15, 23, 42, 0.6);
     padding: 18px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgba(51, 65, 85, 0.8);
 }
 
 /* LINHA DO TEXTO EM INGLÊS COM DESTAQUE MODERNO */
@@ -101,20 +108,20 @@ header p {
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    background: #ffffff;
+    background: rgba(30, 41, 59, 0.9);
     padding: 12px 18px;
     border-radius: 10px;
-    border-left: 4px solid #0ea5e9;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    border-left: 4px solid #38bdf8;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .english-sentence {
     font-size: 18px;
     font-weight: 600;
-    color: #0284c7;
+    color: #38bdf8;
 }
 
-/* BOTÃO DE OUVIR ÁUDIO (FUTURÍSTICO / VERDE VIBRANTE) */
+/* BOTÃO DE OUVIR ÁUDIO (VERDE VIBRANTE) */
 .btn-audio {
     background-color: #10b981;
     color: white;
@@ -136,14 +143,14 @@ header p {
 
 .translation-hint, .pronunciation-guide {
     font-size: 14px;
-    color: #475569;
+    color: #cbd5e1;
 }
 
 .question {
     font-size: 17px;
     margin-bottom: 18px;
     font-weight: 600;
-    color: #0f172a;
+    color: #f8fafc;
 }
 
 .options {
@@ -202,7 +209,7 @@ footer {
 
 /* BOTÃO DE TRADUÇÃO */
 .btn-translate {
-    background-color: #64748b;
+    background-color: #475569;
     color: #ffffff;
     font-size: 13px;
     padding: 8px 14px;
@@ -212,7 +219,7 @@ footer {
 }
 
 .btn-translate:hover {
-    background-color: #475569;
+    background-color: #334155;
 }
 
 .translation-hidden {
@@ -221,14 +228,14 @@ footer {
 
 .translation-visible {
     display: block;
-    background-color: #f0fdf4;
-    color: #166534;
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    color: #e2e8f0;
     padding: 12px 15px;
     border-radius: 8px;
     font-size: 14px;
     margin-bottom: 15px;
-    border-left: 4px solid #22c55e;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+    border-left: 4px solid #38bdf8;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
 }
 
 /* ESTILO QUADRINHO / CARTÃO INTERATIVO */
@@ -245,8 +252,8 @@ footer {
 }
 
 .comic-badge {
-    background-color: #e0f2fe;
-    color: #0369a1;
+    background-color: rgba(14, 165, 233, 0.15);
+    color: #38bdf8;
     font-size: 11px;
     padding: 5px 10px;
     border-radius: 20px;
@@ -265,16 +272,16 @@ footer {
 .btn-option-text {
     flex: 1;
     text-align: left;
-    background-color: #f8fafc;
-    color: #0f172a;
-    border: 1px solid #cbd5e1;
+    background-color: rgba(15, 23, 42, 0.6);
+    color: #f1f5f9;
+    border: 1px solid rgba(51, 65, 85, 0.8);
     box-shadow: none;
 }
 
 .btn-option-text:hover {
-    background-color: #f1f5f9;
-    border-color: #0ea5e9;
-    color: #0284c7;
+    background-color: rgba(30, 41, 59, 0.9);
+    border-color: #38bdf8;
+    color: #38bdf8;
     transform: none;
     box-shadow: none;
 }
@@ -296,4 +303,19 @@ footer {
 .btn-audio-option:hover {
     background-color: #059669;
     transform: translateY(-1px);
+}
+
+#glossario-container::-webkit-scrollbar {
+    width: 6px;
+}
+#glossario-container::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+#glossario-container::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+p, span, label {
+    color: #cbd5e1;
 }

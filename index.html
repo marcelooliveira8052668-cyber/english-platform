@@ -68,9 +68,32 @@
     </section>
 
 </main>
+<!-- ======================================================== -->
+        <!-- MÓDULO EXTRA: DICIONÁRIO E FRASES DO COTIDIANO (150 ITENS) -->
+        <!-- ======================================================== -->
+        <section class="card comic-box">
+            <div class="comic-header">
+                <h2>📚 Glossário & Frases do Dia a Dia</h2>
+                <span class="comic-badge">Essencial</span>
+            </div>
+            <p style="margin-bottom: 15px; font-size: 14px; color: #64748b;">
+                Explore abaixo uma seleção profissional com 100 palavras e 50 frases indispensáveis para dominar o inglês prático do cotidiano. Clique em ouvir para treinar!
+            </p>
+
+            <!-- Abas para alternar entre Palavras e Frases -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button onclick="mostrarSecao('palavras')" id="btn-tab-palavras" style="flex: 1; background-color: #0ea5e9;">100 Palavras do Dia</button>
+                <button onclick="mostrarSecao('frases')" id="btn-tab-frases" style="flex: 1; background-color: #64748b;">50 Frases do Dia</button>
+            </div>
+
+            <!-- Container onde a lista dinâmica será gerada -->
+            <div id="glossario-container" style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 5px;">
+                <!-- O JavaScript vai injetar os itens aqui de forma limpa -->
+            </div>
+        </section>
 
         <section class="card quiz-box">
-            <h2>🎯Frases do dia a dia (Desafios)</h2>
+            <h2>🎯 Pratique o que aprendeu (Desafios)</h2>
             
             <div id="quiz-container">
                 <p id="question-text" class="question">Carregando pergunta...</p>

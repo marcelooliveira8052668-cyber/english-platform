@@ -1,16 +1,40 @@
 /* ==========================================================================
-   FUNÇÃO GLOBAL DE FALA (Text-to-Speech nativa do navegador)
+   FUNÇÃO GLOBAL DE FALA (Com filtro para voz feminina nativa)
    ========================================================================== */
 function falarTexto(textoParaFalar) {
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(textoParaFalar);
         utterance.lang = 'en-US';
-        utterance.rate = 0.9;
+        utterance.rate = 0.9; // Velocidade ideal para estudo
+
+        // Tenta encontrar uma voz feminina em inglês no navegador
+        const voices = window.speechSynthesis.getVoices();
+        const vozFeminina = voices.find(voice => 
+            (voice.lang === 'en-US' || voice.lang === 'en_US' || voice.lang.startsWith('en')) && 
+            (voice.name.toLowerCase().includes('female') || 
+             voice.name.toLowerCase().includes('zira') || 
+             voice.name.toLowerCase().includes('samantha') || 
+             voice.name.toLowerCase().includes('karen') ||
+             voice.name.toLowerCase().includes('google us english'))
+        );
+
+        // Se achar a voz feminina, define ela; caso contrário, usa a padrão em inglês
+        if (vozFeminina) {
+            utterance.voice = vozFeminina;
+        }
+
         window.speechSynthesis.speak(utterance);
     } else {
         alert("Seu navegador não suporta recursos de áudio por voz.");
     }
+}
+
+// Garante que as vozes estejam carregadas em navegadores como o Chrome
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+    };
 }
 
 /* ==========================================================================
@@ -349,13 +373,11 @@ function loadQuiz() {
         
         questionText.innerText = `Questão ${currentQuestionIndex + 1} de ${questionsDatabase.length}: ${currentData.question}`;
         
-        // Configura o texto da tradução, mas deixa oculto inicialmente
         translationBox.innerText = currentData.translation;
         translationBox.className = "translation-hidden";
 
         optionsBox.innerHTML = "";
         
-        // Cria cada alternativa com seu próprio botão de áudio ao lado
         currentData.options.forEach((optionText, index) => {
             const optionRow = document.createElement("div");
             optionRow.className = "option-row";
@@ -370,7 +392,7 @@ function loadQuiz() {
             btnAudioOption.className = "btn-audio-option";
             btnAudioOption.title = "Ouvir pronúncia desta alternativa";
             btnAudioOption.onclick = (e) => {
-                e.stopPropagation(); // Evita marcar a resposta ao clicar no áudio
+                e.stopPropagation();
                 falarTexto(optionText);
             };
 
@@ -387,9 +409,6 @@ function loadQuiz() {
     }
 }
 
-/* ==========================================================================
-   FUNÇÃO PARA MOSTRAR/OCULTAR A TRADUÇÃO DA PERGUNTA ATUAL
-   ========================================================================== */
 function toggleTranslation() {
     if (translationBox.classList.contains("translation-hidden")) {
         translationBox.classList.remove("translation-hidden");
@@ -418,5 +437,207 @@ function nextQuestion() {
     loadQuiz();
 }
 
-// Inicializa o quiz ao carregar a página
 loadQuiz();
+
+/* ==========================================================================
+   BANCO DE DADOS: 100 PALAVRAS E 50 FRASES DO COTIDIANO
+   ========================================================================== */
+const listaPalavras = [
+    { en: "Always", pt: "Sempre", pron: "ól-uéis" },
+    { en: "Never", pt: "Nunca", pron: "né-vêr" },
+    { en: "Today", pt: "Hoje", pron: "tu-dêi" },
+    { en: "Tomorrow", pt: "Amanhã", pron: "tu-mó-rôu" },
+    { en: "Yesterday", pt: "Ontem", pron: "yês-têr-dêi" },
+    { en: "Now", pt: "Agora", pron: "náu" },
+    { en: "Later", pt: "Mais tarde", pron: "lêi-têr" },
+    { en: "Here", pt: "Aqui", pron: "rîr" },
+    { en: "There", pt: "Lá / Ali", pron: "ðêr" },
+    { en: "Friend", pt: "Amigo", pron: "frênd" },
+    { en: "Family", pt: "Família", pron: "fé-mi-li" },
+    { en: "Work", pt: "Trabalho", pron: "uôrk" },
+    { en: "Home", pt: "Casa", pron: "rôm" },
+    { en: "Food", pt: "Comida", pron: "fûd" },
+    { en: "Water", pt: "Água", pron: "uó-têr" },
+    { en: "Coffee", pt: "Café", pron: "kó-fi" },
+    { en: "Money", pt: "Dinheiro", pron: "mâ-ni" },
+    { en: "Time", pt: "Tempo / Hora", pron: "táim" },
+    { en: "Day", pt: "Dia", pron: "dêi" },
+    { en: "Night", pt: "Noite", pron: "náit" },
+    { en: "Morning", pt: "Manhã", pron: "mór-ning" },
+    { en: "Week", pt: "Semana", pron: "uîk" },
+    { en: "Year", pt: "Ano", pron: "yîr" },
+    { en: "Help", pt: "Ajuda / Ajudar", pron: "hêlp" },
+    { en: "Question", pt: "Pergunta", pron: "kuês-chôn" },
+    { en: "Answer", pt: "Resposta", pron: "ên-sêr" },
+    { en: "Problem", pt: "Problema", pron: "pró-blêm" },
+    { en: "Solution", pt: "Solução", pron: "su-lû-shôn" },
+    { en: "Idea", pt: "Ideia", pron: "ái-dî-a" },
+    { en: "Job", pt: "Emprego", pron: "djâb" },
+    { en: "Company", pt: "Empresa", pron: "câm-pa-ni" },
+    { en: "Meeting", pt: "Reunião", pron: "mî-ting" },
+    { en: "Project", pt: "Projeto", pron: "pró-djêct" },
+    { en: "Computer", pt: "Computador", pron: "côm-pyû-têr" },
+    { en: "Phone", pt: "Telefone", pron: "fôn" },
+    { en: "Email", pt: "E-mail", pron: "î-mêil" },
+    { en: "Message", pt: "Mensagem", pron: "mé-sê-dj" },
+    { en: "Street", pt: "Rua", pron: "strît" },
+    { en: "Car", pt: "Carro", pron: "câr" },
+    { en: "Bus", pt: "Ônibus", pron: "bâs" },
+    { en: "Train", pt: "Trem", pron: "trêin" },
+    { en: "Store", pt: "Loja", pron: "stôr" },
+    { en: "Price", pt: "Preço", pron: "práis" },
+    { en: "Card", pt: "Cartão", pron: "cârd" },
+    { en: "Cash", pt: "Dinheiro em espécie", pron: "césh" },
+    { en: "Door", pt: "Porta", pron: "dôr" },
+    { en: "Window", pt: "Janela", pron: "uîn-dôu" },
+    { en: "Key", pt: "Chave", pron: "kî" },
+    { en: "Book", pt: "Livro", pron: "bûk" },
+    { en: "Pen", pt: "Caneta", pron: "pên" },
+    { en: "Paper", pt: "Papel", pron: "pêi-pêr" },
+    { en: "City", pt: "Cidade", pron: "sí-ti" },
+    { en: "Country", pt: "País", pron: "cân-tri" },
+    { en: "World", pt: "Mundo", pron: "uôrld" },
+    { en: "People", pt: "Pessoas", pron: "pî-pôl" },
+    { en: "Child", pt: "Criança", pron: "cháild" },
+    { en: "School", pt: "Escola", pron: "skûl" },
+    { en: "Student", pt: "Estudante", pron: "stû-dênt" },
+    { en: "Teacher", pt: "Professor", pron: "tî-chêr" },
+    { en: "Language", pt: "Idioma", pron: "lên-guê-dj" },
+    { en: "Word", pt: "Palavra", pron: "uôrd" },
+    { en: "Sentence", pt: "Frase", pron: "sên-têns" },
+    { en: "Music", pt: "Música", pron: "myû-zic" },
+    { en: "Movie", pt: "Filme", pron: "mû-vi" },
+    { en: "Game", pt: "Jogo", pron: "gêim" },
+    { en: "Picture", pt: "Foto / Imagem", pron: "píc-chêr" },
+    { en: "Gift", pt: "Presente", pron: "gîft" },
+    { en: "Shop", pt: "Comprar / Loja", pron: "shâp" },
+    { en: "Market", pt: "Mercado", pron: "mâr-kêt" },
+    { en: "Doctor", pt: "Médico", pron: "dôc-têr" },
+    { en: "Hospital", pt: "Hospital", pron: "hôs-pi-tâl" },
+    { en: "Medicine", pt: "Remédio", pron: "mé-di-sin" },
+    { en: "Ticket", pt: "Passagem / Ingresso", pron: "tí-kêt" },
+    { en: "Bag", pt: "Mola / Sacola", pron: "bég" },
+    { en: "Clothes", pt: "Roupas", pron: "clôuðz" },
+    { en: "Shoes", pt: "Sapatos", pron: "shûz" },
+    { en: "Sun", pt: "Sol", pron: "sân" },
+    { en: "Rain", pt: "Chuva", pron: "rêin" },
+    { en: "Wind", pt: "Vento", pron: "uînd" },
+    { en: "Fire", pt: "Fogo", pron: "fái-êr" },
+    { en: "Air", pt: "Ar", pron: "êr" },
+    { en: "Love", pt: "Amor", pron: "lâv" },
+    { en: "Happy", pt: "Feliz", pron: "hé-pi" },
+    { en: "Sad", pt: "Triste", pron: "séd" },
+    { en: "Good", pt: "Bom", pron: "gûd" },
+    { en: "Bad", pt: "Ruim", pron: "béd" },
+    { en: "Big", pt: "Grande", pron: "bîg" },
+    { en: "Small", pt: "Pequeno", pron: "smôl" },
+    { en: "New", pt: "Novo", pron: "nû" },
+    { en: "Old", pt: "Velho / Antigo", pron: "ôuld" },
+    { en: "Hot", pt: "Quente", pron: "hât" },
+    { en: "Cold", pt: "Frio", pron: "côuld" },
+    { en: "Fast", pt: "Rápido", pron: "fést" },
+    { en: "Slow", pt: "Lento", pron: "slôu" },
+    { en: "Easy", pt: "Fácil", pron: "î-zi" },
+    { en: "Hard", pt: "Difícil / Duro", pron: "hârd" },
+    { en: "Clean", pt: "Limpo", pron: "clîn" },
+    { en: "Open", pt: "Aberto", pron: "ôu-pên" },
+    { en: "Closed", pt: "Fechado", pron: "clôu-zd" },
+    { en: "Right", pt: "Certo / Direita", pron: "ráit" }
+];
+
+const listaFrases = [
+    { en: "How are you doing today?", pt: "Como você está hoje?", pron: "háu âr iu dû-ing tu-dêi?" },
+    { en: "What do you do for a living?", pt: "O que você faz da vida (trabalho)?", pron: "uât dû iu dû fôr â lî-ving?" },
+    { en: "I am learning English every single day.", pt: "Eu estou aprendendo inglês todo santo dia.", pron: "ái êm lâr-ning íng-glîsh év-ri sîn-gôl dêi." },
+    { en: "Could you repeat that, please?", pt: "Você poderia repetir isso, por favor?", pron: "cûd iu ri-pît ðét, plîz?" },
+    { en: "I don't understand this word.", pt: "Eu não entendo esta palavra.", pron: "ái dônt ânder-sténd ðis uôrd." },
+    { en: "Where is the nearest restroom?", pt: "Onde fica o banheiro mais próximo?", pron: "uêr íz ðê nî-rêst rûst-rûm?" },
+    { en: "How much does this cost?", pt: "Quanto custa isto?", pron: "háu mâch dâz ðis côst?" },
+    { en: "I would like a cup of coffee, please.", pt: "Eu gostaria de uma xícara de café, por favor.", pron: "ái wûd láik â câp ôv kó-fi, plîz." },
+    { en: "Can I pay with credit card?", pt: "Eu posso pagar com cartão de crédito?", pron: "cên ái pêi wîð créd-it cârd?" },
+    { en: "What time is it right now?", pt: "Que horas são agora?", pron: "uât táim íz ít ráit náu?" },
+    { en: "Have a wonderful day ahead!", pt: "Tenha um dia maravilhoso!", pron: "hév â wân-dêr-fûl dêi â-hêd!" },
+    { en: "See you later alligator!", pt: "Até mais tarde!", pron: "sî íyu lêi-têr!" },
+    { en: "Thank you very much for your help.", pt: "Muito obrigado pela sua ajuda.", pron: "thénk iu vé-ri mâch fôr yôr hêlp." },
+    { en: "Excuse me, can you help me?", pt: "Com licença, você pode me ajudar?", pron: "êx-kyûz mî, cên iu hêlp mî?" },
+    { en: "I am looking for a good job.", pt: "Eu estou procurando um bom emprego.", pron: "ái êm lû-king fôr â gûd djâb." },
+    { en: "Let's work together on this project.", pt: "Vamos trabalhar juntos neste projeto.", pron: "lêts uôrk tu-gê-ðêr ôn ðis pró-djêct." },
+    { en: "My computer is not working properly.", pt: "Meu computador não está funcionando direito.", pron: "mái côm-pyû-têr íz nât uôr-king pró-pêr-li." },
+    { en: "Please send me an email later.", pt: "Por favor, me mande um e-mail mais tarde.", pron: "plîz sênd mî ên î-mêil lêi-têr." },
+    { en: "The weather is amazing today.", pt: "O clima está incrível hoje.", pron: "ðê uê-ðêr íz â-mê-zing tu-dêi." },
+    { en: "I need to buy some groceries.", pt: "Eu preciso comprar algumas compras de mercado.", pron: "ái nîd tû bái sâm grô-sê-riz." },
+    { en: "Turn left at the next corner.", pt: "Vire à esquerda na próxima esquina.", pron: "tûrn lêft ét ðê néxt côr-nêr." },
+    { en: "Turn right at the traffic lights.", pt: "Vire à direita no semáforo.", pron: "tûrn ráit ét ðê tré-fic láits." },
+    { en: "I live near the city center.", pt: "Eu moro perto do centro da cidade.", pron: "ái lîv nîr ðê sí-ti cên-têr." },
+    { en: "What is your phone number?", pt: "Qual é o seu número de telefone?", pron: "uât íz yôr fôn nâm-bêr?" },
+    { en: "I am happy to meet you.", pt: "Estou feliz em conhecer você.", pron: "ái êm hé-pi tû mî-t iu." },
+    { en: "Everything is under control.", pt: "Está tudo sob controle.", pron: "é-vri-thing íz ânder cên-trôl." },
+    { en: "Do you speak Portuguese?", pt: "Você fala português?", pron: "dû iu spîk pôr-tu-gîz?" },
+    { en: "Just a little bit, but I am learning.", pt: "Só um pouquinho, mas estou aprendendo.", pron: "djâst â lî-tôl bít, bât ái êm lâr-ning." },
+    { en: "What is your favorite food?", pt: "Qual é a sua comida favorita?", pron: "uât íz yôr fêi-vô-rit fûd?" },
+    { en: "I like listening to music while working.", pt: "Eu gosto de ouvir música enquanto trabalho.", pron: "ái láik lî-sê-ning tû myû-zic wáil uôr-king." },
+    { en: "Let's make a video call tonight.", pt: "Vamos fazer uma chamada de vídeo hoje à noite.", pron: "lêts mêik â vî-di-ô côl tu-náit." },
+    { en: "I have a meeting at 10 AM.", pt: "Eu tenho uma reunião às 10 da manhã.", pron: "ái hév â mî-ting ét tên ê-êm." },
+    { en: "Can you send me the file?", pt: "Você pode me mandar o arquivo?", pron: "cên iu sênd mî ðê fáil?" },
+    { en: "The internet connection is slow.", pt: "A conexão de internet está lenta.", pron: "ðê în-têr-nêt cô-néc-shôn íz slôu." },
+    { en: "I forgot my password.", pt: "Eu esqueci minha senha.", pron: "ái fêr-gât mái pés-wôrd." },
+    { en: "Please open the door.", pt: "Por favor, abra a porta.", pron: "plîz ôu-pên ðê dôr." },
+    { en: "Close the window, it's cold.", pt: "Feche a janela, está frio.", pron: "clôu-zd ðê uîn-dôu, íts côuld." },
+    { en: "Where did I put my keys?", pt: "Onde eu coloquei minhas chaves?", pron: "uêr díd ái pût mái kîz?" },
+    { en: "I am running late for work.", pt: "Estou me atrasando para o trabalho.", pron: "ái êm râ-ning lêit fôr uôrk." },
+    { en: "Take an umbrella, it might rain.", pt: "Leve um guarda-chuva, pode chover.", pron: "têik ên âm-bré-la, ít máit rêin." },
+    { en: "I am proud of my progress.", pt: "Eu tenho orgulho do meu progresso.", pron: "ái êm práud ôv mái pró-grês." },
+    { en: "Never give up on your dreams.", pt: "Nunca desista dos seus sonhos.", pron: "né-vêr gîv âp ôn yôr drîmz." },
+    { en: "Hard work brings good results.", pt: "Trabalho duro traz bons resultados.", pron: "hârd uôrk brîngs gûd ri-zâlts." },
+    { en: "Success comes with practice.", pt: "O sucesso vem com a prática.", pron: "sôk-sês câms wîð pré-ctis." },
+    { en: "I will achieve my goals.", pt: "Eu vou alcançar minhas metas.", pron: "ái wûl â-chîv mái gôulz." },
+    { en: "Life is full of surprises.", pt: "A vida é cheia de surpresas.", pron: "láif íz fûl ôv sêr-prái-zîz." },
+    { en: "Always look on the bright side.", pt: "Sempre olhe pelo lado positivo.", pron: "ól-uéis lûk ôn ðê bráit sáid." },
+    { en: "Time flies when you are having fun.", pt: "O tempo voa quando você está se divertindo.", pron: "táim fláis wên iu âr hé-ving fân." },
+    { en: "Practice makes perfection.", pt: "A prática leva à perfeição.", pron: "pré-ctis mêiks pêr-féc-shôn." },
+    { en: "Everything is going to be fine.", pt: "Vai dar tudo certo.", pron: "é-vri-thing íz gô-ing tû bî fáin." }
+];
+
+function mostrarSecao(tipo) {
+    const container = document.getElementById("glossario-container");
+    const btnPalavras = document.getElementById("btn-tab-palavras");
+    const btnFrases = document.getElementById("btn-tab-frases");
+    
+    container.innerHTML = "";
+
+    if (tipo === 'palavras') {
+        btnPalavras.style.backgroundColor = "#0ea5e9";
+        btnFrases.style.backgroundColor = "#64748b";
+
+        listaPalavras.forEach((item, index) => {
+            container.appendChild(criarLinhaItem(index + 1, item.en, item.pt, item.pron));
+        });
+    } else {
+        btnFrases.style.backgroundColor = "#0ea5e9";
+        btnPalavras.style.backgroundColor = "#64748b";
+
+        listaFrases.forEach((item, index) => {
+            container.appendChild(criarLinhaItem(index + 1, item.en, item.pt, item.pron));
+        });
+    }
+}
+
+function criarLinhaItem(numero, ingles, portugues, pronuncia) {
+    const row = document.createElement("div");
+    row.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 10px 14px; border-radius: 8px; border: 1px solid #e2e8f0; gap: 10px;";
+
+    const infoDiv = document.createElement("div");
+    infoDiv.innerHTML = `<strong style="color: #0284c7; font-size: 15px;">${numero}. ${ingles}</strong><br><span style="font-size: 13px; color: #475569;">💡 ${portugues}</span><br><span style="font-size: 12px; color: #94a3b8; font-style: italic;">🗣️ ${pronuncia}</span>`;
+
+    const btnOuvir = document.createElement("button");
+    btnOuvir.innerHTML = "🔊 Ouvir";
+    btnOuvir.className = "btn-audio";
+    btnOuvir.style.padding = "8px 12px";
+    btnOuvir.onclick = () => falarTexto(ingles);
+
+    row.appendChild(infoDiv);
+    row.appendChild(btnOuvir);
+    return row;
+}
+
+mostrarSecao('palavras');
