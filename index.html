@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Kids & Startup Lab - Áudio Interativo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>🌐 GlobalTalk Lab</h1>
+        <p>Pratique situações reais do dia a dia, trabalho e viagens com áudio nativo!</p>
+    </header>
+
+    <main class="container">
+
+    <!-- ======================================================== -->
+    <!-- QUADRINHO 1: A ROTINA DE ESTUDOS DO DIA A DIA            -->
+    <!-- ======================================================== -->
+    <section class="card comic-box">
+        <div class="comic-header">
+            <h2>💬 Quadrinho 1: A Rotina de Estudos</h2>
+            <span class="comic-badge">Cotidiano</span>
+        </div>
+        
+        <div class="image-container">
+            <!-- Imagem de uma pessoa estudando em casa/no computador -->
+            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600" alt="Pessoa estudando em casa">
+            <span class="image-caption">Cenário: Praticando inglês todos os dias após o trabalho.</span>
+        </div>
+
+        <div class="story-content">
+            <div class="audio-row">
+                <p class="english-sentence" id="sentence-1">"I study English every day after work."</p>
+                <button class="btn-audio" onclick="falarTexto('I study English every day after work.')" title="Ouvir pronúncia">🔊 Ouvir</button>
+            </div>
+            <p class="translation-hint">💡 **Tradução:** Eu estudo inglês todo dia depois do trabalho.</p>
+            <p class="pronunciation-guide">🗣️ **Pronúncia:** *ái stâ-di íng-glîsh év-ri dêi áf-tûr uôrk.*</p>
+        </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- QUADRINHO 2: PEDINDO AJUDA NO TRABALHO / COMPUTADOR      -->
+    <!-- ======================================================== -->
+    <section class="card comic-box">
+        <div class="comic-header">
+            <h2>💬 Quadrinho 2: No Trabalho / Tecnologia</h2>
+            <span class="comic-badge">Profissional</span>
+        </div>
+
+        <div class="image-container">
+            <!-- Imagem de tecnologia / dúvidas no computador -->
+            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600" alt="Reunião ou trabalho no computador">
+            <span class="image-caption">Cenário: Tirando dúvidas em uma ferramenta de trabalho.</span>
+        </div>
+
+        <div class="story-content">
+            <div class="audio-row">
+                <p class="english-sentence" id="sentence-2">"Can you help me fix this error on the screen?"</p>
+                <button class="btn-audio" onclick="falarTexto('Can you help me fix this error on the screen?')" title="Ouvir pronúncia">🔊 Ouvir</button>
+            </div>
+            <p class="translation-hint">💡 **Tradução:** Você pode me ajudar a consertar este erro na tela?</p>
+            <p class="pronunciation-guide">🗣️ **Pronúncia:** *kên iu hélp mi fíks ðis ér-ôr ôn ðê skriín?*</p>
+        </div>
+    </section>
+
+</main>
+
+        <section class="card quiz-box">
+            <h2>🎯 Pratique o que aprendeu (Desafios)</h2>
+            
+            <div id="quiz-container">
+                <p id="question-text" class="question">Carregando pergunta...</p>
+                
+                <button onclick="toggleTranslation()" class="btn-translate">🌐 Ver Tradução da Pergunta</button>
+                <p id="translation-box" class="translation-hidden">A tradução aparecerá aqui...</p>
+
+                <div class="options" id="options-box"></div>
+            </div>
+
+            <div id="result-box" class="hidden">
+                <p id="feedback-text"></p>
+                <button onclick="nextQuestion()" class="btn-next">Próxima Pergunta ➔</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Plataforma interativa com síntese de voz nativa. 💡</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

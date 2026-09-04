@@ -1,0 +1,299 @@
+/* ==========================================================================
+   ESTILO FUTURÍSTICO & CLEAN - PLATAFORMA DE IDIOMAS
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8fafc; /* Fundo limpo e claro */
+    color: #1e293b;            /* Texto principal escuro para legibilidade perfeita */
+    line-height: 1.6;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+header h1 {
+    color: #0284c7;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    letter-spacing: -0.5px;
+}
+
+header p {
+    color: #64748b;
+    font-size: 16px;
+}
+
+.container {
+    max-width: 750px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* CARDS COM ESTILO FUTURÍSTICO E SOMBRAS SUAVES */
+.card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 20px 35px -10px rgba(2, 132, 199, 0.1);
+    border-color: #bae6fd;
+}
+
+.card h2 {
+    font-size: 20px;
+    color: #0f172a;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.image-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.image-container img {
+    width: 100%;
+    max-height: 260px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+}
+
+.image-caption {
+    font-size: 13px;
+    color: #64748b;
+    display: block;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.story-content {
+    background-color: #f8fafc;
+    padding: 18px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+/* LINHA DO TEXTO EM INGLÊS COM DESTAQUE MODERNO */
+.audio-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border-left: 4px solid #0ea5e9;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.english-sentence {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0284c7;
+}
+
+/* BOTÃO DE OUVIR ÁUDIO (FUTURÍSTICO / VERDE VIBRANTE) */
+.btn-audio {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.btn-audio:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+}
+
+.translation-hint, .pronunciation-guide {
+    font-size: 14px;
+    color: #475569;
+}
+
+.question {
+    font-size: 17px;
+    margin-bottom: 18px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* BOTÕES GERAIS E DE OPÇÕES */
+button {
+    background-color: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+button:hover {
+    background-color: #0284c7;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3);
+}
+
+.hidden {
+    display: none;
+}
+
+#feedback-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.btn-next {
+    background-color: #10b981;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.btn-next:hover {
+    background-color: #059669;
+}
+
+footer {
+    text-align: center;
+    margin-top: 45px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* BOTÃO DE TRADUÇÃO */
+.btn-translate {
+    background-color: #64748b;
+    color: #ffffff;
+    font-size: 13px;
+    padding: 8px 14px;
+    margin-bottom: 15px;
+    width: auto;
+    box-shadow: 0 4px 10px rgba(100, 116, 139, 0.2);
+}
+
+.btn-translate:hover {
+    background-color: #475569;
+}
+
+.translation-hidden {
+    display: none;
+}
+
+.translation-visible {
+    display: block;
+    background-color: #f0fdf4;
+    color: #166534;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    border-left: 4px solid #22c55e;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+}
+
+/* ESTILO QUADRINHO / CARTÃO INTERATIVO */
+.comic-box {
+    border-top: 5px solid #0ea5e9;
+    position: relative;
+}
+
+.comic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.comic-badge {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ESTILOS PARA AS OPÇÕES DO QUIZ COM ÁUDIO INDIVIDUAL */
+.option-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-option-text {
+    flex: 1;
+    text-align: left;
+    background-color: #f8fafc;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+    box-shadow: none;
+}
+
+.btn-option-text:hover {
+    background-color: #f1f5f9;
+    border-color: #0ea5e9;
+    color: #0284c7;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-audio-option {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.btn-audio-option:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+}
