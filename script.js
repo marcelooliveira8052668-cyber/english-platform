@@ -6,9 +6,8 @@ function falarTexto(textoParaFalar) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(textoParaFalar);
         utterance.lang = 'en-US';
-        utterance.rate = 0.9; // Velocidade ideal para estudo
+        utterance.rate = 0.9;
 
-        // Tenta encontrar uma voz feminina em inglês no navegador
         const voices = window.speechSynthesis.getVoices();
         const vozFeminina = voices.find(voice => 
             (voice.lang === 'en-US' || voice.lang === 'en_US' || voice.lang.startsWith('en')) && 
@@ -19,7 +18,6 @@ function falarTexto(textoParaFalar) {
              voice.name.toLowerCase().includes('google us english'))
         );
 
-        // Se achar a voz feminina, define ela; caso contrário, usa a padrão em inglês
         if (vozFeminina) {
             utterance.voice = vozFeminina;
         }
@@ -30,7 +28,6 @@ function falarTexto(textoParaFalar) {
     }
 }
 
-// Garante que as vozes estejam carregadas em navegadores como o Chrome
 if ('speechSynthesis' in window) {
     window.speechSynthesis.onvoiceschanged = () => {
         window.speechSynthesis.getVoices();
@@ -38,409 +35,7 @@ if ('speechSynthesis' in window) {
 }
 
 /* ==========================================================================
-   BANCO DE DADOS EXPANDIDO (30 Textos e Situações Reais com Tradução)
-   ========================================================================== */
-const questionsDatabase = [
-    // 1. Aeroporto / Alfândega
-    {
-        question: "How do you say at US immigration: 'I am staying here for two weeks'?",
-        translation: "Tradução: Como você diz na imigração americana: 'Estarei aqui por duas semanas'?",
-        options: [
-            "I will live here for two years.",
-            "I am staying here for two weeks.",
-            "I am working at the airport."
-        ],
-        correct: 1
-    },
-    {
-        question: "Where is the baggage claim?",
-        translation: "Tradução: Onde fica a retirada de bagagens?",
-        options: [
-            "Where is the baggage claim?",
-            "Where is the bathroom?",
-            "How much is the ticket?"
-        ],
-        correct: 0
-    },
-    {
-        question: "The officer asks: 'What is the purpose of your trip?' What does it mean?",
-        translation: "Tradução: O oficial pergunta: 'Qual é o propósito da sua viagem?' O que isso significa?",
-        options: [
-            "Qual é o preço da passagem?",
-            "Qual é o propósito da sua viagem?",
-            "Onde você perdeu sua mala?"
-        ],
-        correct: 1
-    },
-
-    // 2. Ajudando um americano perdido no Brasil
-    {
-        question: "An American is lost and you want to say: 'You need to take the subway'?",
-        translation: "Tradução: Um americano está perdido e você quer dizer: 'Você precisa pegar o metrô'?",
-        options: [
-            "You need to take the subway.",
-            "You bought a new car.",
-            "She loves eating pizza."
-        ],
-        correct: 0
-    },
-    {
-        question: "How to tell him: 'It is right around the corner'?",
-        translation: "Tradução: Como dizer a ele: 'Fica logo ali na esquina'?",
-        options: [
-            "It is very far from here.",
-            "It is right around the corner.",
-            "Tomorrow is another day."
-        ],
-        correct: 1
-    },
-    {
-        question: "To offer help politely: 'Can I help you find the address?'",
-        translation: "Tradução: Para oferecer ajuda educadamente: 'Posso te ajudar a encontrar o endereço?'",
-        options: [
-            "Can I help you find the address?",
-            "Do you want to buy my house?",
-            "What time is the meeting?"
-        ],
-        correct: 0
-    },
-
-    // 3. Alimentação / Restaurantes
-    {
-        question: "How do you ask for the check in a restaurant in English?",
-        translation: "Tradução: Como você pede a conta em um restaurante em inglês?",
-        options: [
-            "Can I have the menu, please?",
-            "Can I have the check, please?",
-            "Where is the kitchen?"
-        ],
-        correct: 1
-    },
-    {
-        question: "To tell the waiter: 'I would like a coffee with milk, please'?",
-        translation: "Tradução: Para dizer ao garçom: 'Eu gostaria de um café com leite, por favor'?",
-        options: [
-            "I would like a coffee with milk, please.",
-            "I don't like drinking water.",
-            "Give me some cold juice."
-        ],
-        correct: 0
-    },
-    {
-        question: "How to ask if a dish contains pork due to dietary restrictions?",
-        translation: "Tradução: Como perguntar se um prato contém porco por restrição alimentar?",
-        options: [
-            "Does this dish have pork in it?",
-            "Is this table clean?",
-            "How much is the dessert?"
-        ],
-        correct: 0
-    },
-    {
-        question: "To praise the food: 'The food was delicious!'",
-        translation: "Tradução: Para elogiar a comida: 'A comida estava deliciosa!'",
-        options: [
-            "The food was terrible.",
-            "The food was delicious!",
-            "The check was very expensive."
-        ],
-        correct: 1
-    },
-
-    // 4. Emprego e Entrevistas
-    {
-        question: "In an interview, how to talk about your experience: 'I worked with web development for three years'?",
-        translation: "Tradução: Em uma entrevista, como falar sobre sua experiência: 'Eu trabalhei com desenvolvimento web por três anos'?",
-        options: [
-            "I will work at home tomorrow.",
-            "I worked with web development for three years.",
-            "I never touch a computer."
-        ],
-        correct: 1
-    },
-    {
-        question: "How to state your main qualities: 'I am focused on solving problems'?",
-        translation: "Tradução: Como declarar suas principais qualidades: 'Eu sou focado em resolver problemas'?",
-        options: [
-            "I am focused on solving problems.",
-            "I am very lazy at work.",
-            "I hate solving issues."
-        ],
-        correct: 0
-    },
-    {
-        question: "How to ask about career growth opportunities in the company?",
-        translation: "Tradução: Como perguntar sobre oportunidades de crescimento de carreira na empresa?",
-        options: [
-            "What are the career growth opportunities here?",
-            "When is payday?",
-            "Can I sleep at the office?"
-        ],
-        correct: 0
-    },
-    {
-        question: "To accept a professional challenge: 'I am ready for this new project'?",
-        translation: "Tradução: Para aceitar um desafio profissional: 'Estou pronto para este novo projeto'?",
-        options: [
-            "I am ready for this new project.",
-            "I am afraid of computers.",
-            "This project is closed."
-        ],
-        correct: 0
-    },
-
-    // 5. Com Amigos e Vida Social
-    {
-        question: "How to invite a friend out: 'Do you want to hang out tonight?'",
-        translation: "Tradução: Como convidar um amigo para sair: 'Quer sair hoje à noite?'",
-        options: [
-            "Do you want to hang out tonight?",
-            "Are you working next week?",
-            "Where were you yesterday?"
-        ],
-        correct: 0
-    },
-    {
-        question: "To say: 'It was nice to see you again!'",
-        translation: "Tradução: Para dizer: 'Foi muito bom ver você de novo!'",
-        options: [
-            "It was nice to see you again!",
-            "Go away from me.",
-            "I don't know you."
-        ],
-        correct: 0
-    },
-    {
-        question: "How to answer when someone asks 'How is it going?'",
-        translation: "Tradução: Como responder quando alguém pergunta 'Como vão as coisas?'",
-        options: [
-            "Everything is great, and you?",
-            "My name is Marcelo.",
-            "I live in a garage."
-        ],
-        correct: 0
-    },
-    {
-        question: "To plan something: 'Call me later so we can talk'",
-        translation: "Tradução: Para combinar algo: 'Me liga mais tarde para conversarmos'",
-        options: [
-            "Call me later so we can talk.",
-            "Don't talk to me anymore.",
-            "Send me an email in 2030."
-        ],
-        correct: 0
-    },
-
-    // 6. Com a Família e Casa
-    {
-        question: "How to tell the family: 'Dinner is ready on the table'?",
-        translation: "Tradução: Como dizer para a família: 'O jantar está pronto na mesa'?",
-        options: [
-            "Dinner is ready on the table.",
-            "The house is on fire.",
-            "Nobody is hungry today."
-        ],
-        correct: 0
-    },
-    {
-        question: "To ask for help with groceries: 'Can you help me carry these bags?'",
-        translation: "Tradução: Para pedir ajuda com as compras: 'Você pode me ajudar a carregar estas sacolas?'",
-        options: [
-            "Can you help me carry these bags?",
-            "Where is my computer?",
-            "Let's play video games."
-        ],
-        correct: 0
-    },
-    {
-        question: "How to ask family members: 'How was your day?'",
-        translation: "Tradução: Como perguntar aos familiares: 'Como foi o seu dia?'",
-        options: [
-            "How was your day?",
-            "What time is it?",
-            "Where is the car key?"
-        ],
-        correct: 0
-    },
-
-    // 7. Viagens, Hotéis e Ruas
-    {
-        question: "At the hotel counter, how to check in: 'I have a reservation under the name Silva'?",
-        translation: "Tradução: No balcão do hotel, como fazer o check-in: 'Eu tenho uma reserva no nome de Silva'?",
-        options: [
-            "I have a reservation under the name Silva.",
-            "I lost my hotel room.",
-            "How much is a flight to Miami?"
-        ],
-        correct: 0
-    },
-    {
-        question: "How to ask for the Wi-Fi password at a hotel or restaurant?",
-        translation: "Tradução: Como pedir a senha do Wi-Fi em um hotel ou restaurante?",
-        options: [
-            "What is the Wi-Fi password, please?",
-            "Where is the swimming pool?",
-            "Can I pay with cash?"
-        ],
-        correct: 0
-    },
-    {
-        question: "To ask where the nearest train station is:",
-        translation: "Tradução: Para perguntar onde fica a estação de trem mais próxima:",
-        options: [
-            "Where is the nearest train station?",
-            "Is it raining outside?",
-            "What time does the store open?"
-        ],
-        correct: 0
-    },
-    {
-        question: "To ask a favor on the street: 'Excuse me, do you know what time it is?'",
-        translation: "Tradução: Para pedir um favor na rua: 'Com licença, você sabe que horas são?'",
-        options: [
-            "Excuse me, do you know what time it is?",
-            "Stop talking to me.",
-            "Give me your watch."
-        ],
-        correct: 0
-    },
-
-    // 8. Tecnologia, Trabalho Remoto e Startups
-    {
-        question: "In a Google Meet meeting, how to say: 'My microphone was muted'?",
-        translation: "Tradução: Em uma reunião no Google Meet, como dizer: 'Meu microfone estava mutado'?",
-        options: [
-            "My microphone was muted.",
-            "The internet is very fast.",
-            "I am sharing my screen."
-        ],
-        correct: 0
-    },
-    {
-        question: "How to warn the team: 'I am going to push the updated code to GitHub'?",
-        translation: "Tradução: Como avisar a equipe: 'Vou subir o código atualizado para o GitHub'?",
-        options: [
-            "I am going to push the updated code to GitHub.",
-            "I deleted the entire website.",
-            "The computer is broken."
-        ],
-        correct: 0
-    },
-    {
-        question: "To talk about deadlines: 'We need to deliver this task by Friday'?",
-        translation: "Tradução: Para falar sobre prazos: 'Precisamos entregar esta tarefa até sexta-feira'?",
-        options: [
-            "We need to deliver this task by Friday.",
-            "We started this company last year.",
-            "Nobody likes working here."
-        ],
-        correct: 0
-    },
-    {
-        question: "To pitch an innovative idea to investors:",
-        translation: "Tradução: Para apresentar uma ideia inovadora para investidores:",
-        options: [
-            "We have a disruptive solution for the market.",
-            "Our office is closed today.",
-            "We don't have any customers."
-        ],
-        correct: 0
-    },
-    {
-        question: "Hitting a milestone: 'We achieved our goal this quarter!'",
-        translation: "Tradução: Atingindo uma meta: 'Conseguimos bater nossa meta deste trimestre!'",
-        options: [
-            "We achieved our goal this quarter!",
-            "We failed all our projects.",
-            "Let's cancel the company."
-        ],
-        correct: 0
-    }
-];
-
-let currentQuestionIndex = 0;
-
-const questionText = document.getElementById("question-text");
-const translationBox = document.getElementById("translation-box");
-const optionsBox = document.getElementById("options-box");
-const quizContainer = document.getElementById("quiz-container");
-const resultBox = document.getElementById("result-box");
-const feedbackText = document.getElementById("feedback-text");
-
-function loadQuiz() {
-    if (currentQuestionIndex < questionsDatabase.length) {
-        const currentData = questionsDatabase[currentQuestionIndex];
-        
-        questionText.innerText = `Questão ${currentQuestionIndex + 1} de ${questionsDatabase.length}: ${currentData.question}`;
-        
-        translationBox.innerText = currentData.translation;
-        translationBox.className = "translation-hidden";
-
-        optionsBox.innerHTML = "";
-        
-        currentData.options.forEach((optionText, index) => {
-            const optionRow = document.createElement("div");
-            optionRow.className = "option-row";
-
-            const btnOption = document.createElement("button");
-            btnOption.innerText = optionText;
-            btnOption.className = "btn-option-text";
-            btnOption.onclick = () => checkAnswer(index, currentData.correct);
-
-            const btnAudioOption = document.createElement("button");
-            btnAudioOption.innerHTML = "🔊 Ouvir";
-            btnAudioOption.className = "btn-audio-option";
-            btnAudioOption.title = "Ouvir pronúncia desta alternativa";
-            btnAudioOption.onclick = (e) => {
-                e.stopPropagation();
-                falarTexto(optionText);
-            };
-
-            optionRow.appendChild(btnOption);
-            optionRow.appendChild(btnAudioOption);
-            optionsBox.appendChild(optionRow);
-        });
-
-        quizContainer.classList.remove("hidden");
-        resultBox.classList.add("hidden");
-    } else {
-        quizContainer.innerHTML = "🎉 <strong>Parabéns!</strong> Você completou todos os 30 desafios práticos do ecossistema de conversação!";
-        resultBox.classList.add("hidden");
-    }
-}
-
-function toggleTranslation() {
-    if (translationBox.classList.contains("translation-hidden")) {
-        translationBox.classList.remove("translation-hidden");
-        translationBox.classList.add("translation-visible");
-    } else {
-        translationBox.classList.remove("translation-visible");
-        translationBox.classList.add("translation-hidden");
-    }
-}
-
-function checkAnswer(selectedIndex, correctIndex) {
-    quizContainer.classList.add("hidden");
-    resultBox.classList.remove("hidden");
-
-    if (selectedIndex === correctIndex) {
-        feedbackText.innerText = "✅ Correto! Excelente vocabulário assimilado!";
-        feedbackText.style.color = "#4ade80";
-    } else {
-        feedbackText.innerText = "❌ Ops! Errado. Use o botão de tradução e escute as opções para tentar de novo.";
-        feedbackText.style.color = "#f87171";
-    }
-}
-
-function nextQuestion() {
-    currentQuestionIndex++;
-    loadQuiz();
-}
-
-loadQuiz();
-
-/* ==========================================================================
-   BANCO DE DADOS: 100 PALAVRAS E 50 FRASES DO COTIDIANO
+   BANCO DE DADOS: 100 PALAVRAS DO COTIDIANO
    ========================================================================== */
 const listaPalavras = [
     { en: "Always", pt: "Sempre", pron: "ól-uéis" },
@@ -516,7 +111,7 @@ const listaPalavras = [
     { en: "Hospital", pt: "Hospital", pron: "hôs-pi-tâl" },
     { en: "Medicine", pt: "Remédio", pron: "mé-di-sin" },
     { en: "Ticket", pt: "Passagem / Ingresso", pron: "tí-kêt" },
-    { en: "Bag", pt: "Mola / Sacola", pron: "bég" },
+    { en: "Bag", pt: "Mala / Sacola", pron: "bég" },
     { en: "Clothes", pt: "Roupas", pron: "clôuðz" },
     { en: "Shoes", pt: "Sapatos", pron: "shûz" },
     { en: "Sun", pt: "Sol", pron: "sân" },
@@ -545,59 +140,64 @@ const listaPalavras = [
     { en: "Right", pt: "Certo / Direita", pron: "ráit" }
 ];
 
+/* ==========================================================================
+   BANCO DE DADOS: 50 FRASES DO DIA A DIA (Com foco em DO, DID e WILL)
+   ========================================================================== */
 const listaFrases = [
-    { en: "How are you doing today?", pt: "Como você está hoje?", pron: "háu âr iu dû-ing tu-dêi?" },
-    { en: "What do you do for a living?", pt: "O que você faz da vida (trabalho)?", pron: "uât dû iu dû fôr â lî-ving?" },
-    { en: "I am learning English every single day.", pt: "Eu estou aprendendo inglês todo santo dia.", pron: "ái êm lâr-ning íng-glîsh év-ri sîn-gôl dêi." },
-    { en: "Could you repeat that, please?", pt: "Você poderia repetir isso, por favor?", pron: "cûd iu ri-pît ðét, plîz?" },
+    { en: "What do you do for a living?", pt: "O que você faz da vida?", pron: "uât dû iu dû fôr â lî-ving?" },
+    { en: "Where do you live?", pt: "Onde você mora?", pron: "uêr dû iu lîv?" },
+    { en: "Do you speak English?", pt: "Você fala inglês?", pron: "dû iu spîk íng-glîsh?" },
     { en: "I don't understand this word.", pt: "Eu não entendo esta palavra.", pron: "ái dônt ânder-sténd ðis uôrd." },
-    { en: "Where is the nearest restroom?", pt: "Onde fica o banheiro mais próximo?", pron: "uêr íz ðê nî-rêst rûst-rûm?" },
-    { en: "How much does this cost?", pt: "Quanto custa isto?", pron: "háu mâch dâz ðis côst?" },
-    { en: "I would like a cup of coffee, please.", pt: "Eu gostaria de uma xícara de café, por favor.", pron: "ái wûd láik â câp ôv kó-fi, plîz." },
-    { en: "Can I pay with credit card?", pt: "Eu posso pagar com cartão de crédito?", pron: "cên ái pêi wîð créd-it cârd?" },
-    { en: "What time is it right now?", pt: "Que horas são agora?", pron: "uât táim íz ít ráit náu?" },
-    { en: "Have a wonderful day ahead!", pt: "Tenha um dia maravilhoso!", pron: "hév â wân-dêr-fûl dêi â-hêd!" },
-    { en: "See you later alligator!", pt: "Até mais tarde!", pron: "sî íyu lêi-têr!" },
-    { en: "Thank you very much for your help.", pt: "Muito obrigado pela sua ajuda.", pron: "thénk iu vé-ri mâch fôr yôr hêlp." },
-    { en: "Excuse me, can you help me?", pt: "Com licença, você pode me ajudar?", pron: "êx-kyûz mî, cên iu hêlp mî?" },
-    { en: "I am looking for a good job.", pt: "Eu estou procurando um bom emprego.", pron: "ái êm lû-king fôr â gûd djâb." },
-    { en: "Let's work together on this project.", pt: "Vamos trabalhar juntos neste projeto.", pron: "lêts uôrk tu-gê-ðêr ôn ðis pró-djêct." },
-    { en: "My computer is not working properly.", pt: "Meu computador não está funcionando direito.", pron: "mái côm-pyû-têr íz nât uôr-king pró-pêr-li." },
-    { en: "Please send me an email later.", pt: "Por favor, me mande um e-mail mais tarde.", pron: "plîz sênd mî ên î-mêil lêi-têr." },
-    { en: "The weather is amazing today.", pt: "O clima está incrível hoje.", pron: "ðê uê-ðêr íz â-mê-zing tu-dêi." },
-    { en: "I need to buy some groceries.", pt: "Eu preciso comprar algumas compras de mercado.", pron: "ái nîd tû bái sâm grô-sê-riz." },
-    { en: "Turn left at the next corner.", pt: "Vire à esquerda na próxima esquina.", pron: "tûrn lêft ét ðê néxt côr-nêr." },
-    { en: "Turn right at the traffic lights.", pt: "Vire à direita no semáforo.", pron: "tûrn ráit ét ðê tré-fic láits." },
-    { en: "I live near the city center.", pt: "Eu moro perto do centro da cidade.", pron: "ái lîv nîr ðê sí-ti cên-têr." },
-    { en: "What is your phone number?", pt: "Qual é o seu número de telefone?", pron: "uât íz yôr fôn nâm-bêr?" },
-    { en: "I am happy to meet you.", pt: "Estou feliz em conhecer você.", pron: "ái êm hé-pi tû mî-t iu." },
-    { en: "Everything is under control.", pt: "Está tudo sob controle.", pron: "é-vri-thing íz ânder cên-trôl." },
-    { en: "Do you speak Portuguese?", pt: "Você fala português?", pron: "dû iu spîk pôr-tu-gîz?" },
-    { en: "Just a little bit, but I am learning.", pt: "Só um pouquinho, mas estou aprendendo.", pron: "djâst â lî-tôl bít, bât ái êm lâr-ning." },
-    { en: "What is your favorite food?", pt: "Qual é a sua comida favorita?", pron: "uât íz yôr fêi-vô-rit fûd?" },
-    { en: "I like listening to music while working.", pt: "Eu gosto de ouvir música enquanto trabalho.", pron: "ái láik lî-sê-ning tû myû-zic wáil uôr-king." },
-    { en: "Let's make a video call tonight.", pt: "Vamos fazer uma chamada de vídeo hoje à noite.", pron: "lêts mêik â vî-di-ô côl tu-náit." },
-    { en: "I have a meeting at 10 AM.", pt: "Eu tenho uma reunião às 10 da manhã.", pron: "ái hév â mî-ting ét tên ê-êm." },
-    { en: "Can you send me the file?", pt: "Você pode me mandar o arquivo?", pron: "cên iu sênd mî ðê fáil?" },
-    { en: "The internet connection is slow.", pt: "A conexão de internet está lenta.", pron: "ðê în-têr-nêt cô-néc-shôn íz slôu." },
-    { en: "I forgot my password.", pt: "Eu esqueci minha senha.", pron: "ái fêr-gât mái pés-wôrd." },
-    { en: "Please open the door.", pt: "Por favor, abra a porta.", pron: "plîz ôu-pên ðê dôr." },
-    { en: "Close the window, it's cold.", pt: "Feche a janela, está frio.", pron: "clôu-zd ðê uîn-dôu, íts côuld." },
-    { en: "Where did I put my keys?", pt: "Onde eu coloquei minhas chaves?", pron: "uêr díd ái pût mái kîz?" },
-    { en: "I am running late for work.", pt: "Estou me atrasando para o trabalho.", pron: "ái êm râ-ning lêit fôr uôrk." },
-    { en: "Take an umbrella, it might rain.", pt: "Leve um guarda-chuva, pode chover.", pron: "têik ên âm-bré-la, ít máit rêin." },
-    { en: "I am proud of my progress.", pt: "Eu tenho orgulho do meu progresso.", pron: "ái êm práud ôv mái pró-grês." },
-    { en: "Never give up on your dreams.", pt: "Nunca desista dos seus sonhos.", pron: "né-vêr gîv âp ôn yôr drîmz." },
-    { en: "Hard work brings good results.", pt: "Trabalho duro traz bons resultados.", pron: "hârd uôrk brîngs gûd ri-zâlts." },
-    { en: "Success comes with practice.", pt: "O sucesso vem com a prática.", pron: "sôk-sês câms wîð pré-ctis." },
-    { en: "I will achieve my goals.", pt: "Eu vou alcançar minhas metas.", pron: "ái wûl â-chîv mái gôulz." },
-    { en: "Life is full of surprises.", pt: "A vida é cheia de surpresas.", pron: "láif íz fûl ôv sêr-prái-zîz." },
-    { en: "Always look on the bright side.", pt: "Sempre olhe pelo lado positivo.", pron: "ól-uéis lûk ôn ðê bráit sáid." },
-    { en: "Time flies when you are having fun.", pt: "O tempo voa quando você está se divertindo.", pron: "táim fláis wên iu âr hé-ving fân." },
-    { en: "Practice makes perfection.", pt: "A prática leva à perfeição.", pron: "pré-ctis mêiks pêr-féc-shôn." },
-    { en: "Everything is going to be fine.", pt: "Vai dar tudo certo.", pron: "é-vri-thing íz gô-ing tû bî fáin." }
+    { en: "What time do you wake up?", pt: "Que horas você acorda?", pron: "uât táim dû iu wêik âp?" },
+    { en: "Do you like coffee?", pt: "Você gosta de café?", pron: "dû iu láik kó-fi?" },
+    { en: "I don't have time today.", pt: "Eu não tenho tempo hoje.", pron: "ái dônt hév táim tu-dêi." },
+    { en: "How do you spell your name?", pt: "Como se escreve seu nome?", pron: "háu dû iu spêl yôr nêim?" },
+    { en: "Do you know the answer?", pt: "Você sabe a resposta?", pron: "dû iu nôu ðê ên-sêr?" },
+    { en: "I don't know what to do.", pt: "Eu não sei o que fazer.", pron: "ái dônt nôu uât tû dû." },
+    { en: "What do you usually eat for breakfast?", pt: "O que você come no café da manhã?", pron: "uât dû iu yû-zhu-li ît fôr brék-fâst?" },
+    { en: "Do you need any help?", pt: "Você precisa de ajuda?", pron: "dû iu nîd é-ni hêlp?" },
+    { en: "I don't remember his name.", pt: "Eu não me lembro do nome dele.", pron: "ái dônt ri-mém-bêr hîz nêim." },
+    { en: "Where do you want to go?", pt: "Onde você quer ir?", pron: "uêr dû iu wânt tû gôu?" },
+    { en: "Do you have any questions?", pt: "Você tem alguma dúvida?", pron: "dû iu hév é-ni kuês-chôns?" },
+    { en: "I don't care about that.", pt: "Eu não me importo com isso.", pron: "ái dônt cêr â-baut ðét." },
+    { en: "What do you think about this?", pt: "O que você acha disso?", pron: "uât dû iu thînk â-baut ðis?" },
+    { en: "What did you do yesterday?", pt: "O que você fez ontem?", pron: "uât díd iu dû yês-têr-dêi?" },
+    { en: "Where did you go last night?", pt: "Onde você foi ontem à noite?", pron: "uêr díd iu gôu lést náit?" },
+    { en: "I didn't sleep well last night.", pt: "Eu não dormi bem noite passada.", pron: "ái dî-dênt slîp wél lést náit." },
+    { en: "Did you enjoy the movie?", pt: "Você curtiu o filme?", pron: "díd iu ên-djói ðê mû-vi?" },
+    { en: "She didn't call me back.", pt: "Ela não me ligou de volta.", pron: "shî dî-dênt côl mî bêc." },
+    { en: "What time did you arrive?", pt: "Que horas você chegou?", pron: "uât táim díd iu â-ráiv?" },
+    { en: "I didn't understand the question.", pt: "Eu não entendi a pergunta.", pron: "ái dî-dênt ânder-sténd ðê kuês-chôn." },
+    { en: "Did you finish your homework?", pt: "Você terminou seu dever?", pron: "díd iu fî-nish yôr hûm-wôrk?" },
+    { en: "He didn't want to talk about it.", pt: "Ele não quis falar sobre isso.", pron: "hî dî-dênt wânt tû tôk â-baut ít." },
+    { en: "Did you see my keys anywhere?", pt: "Você viu minhas chaves?", pron: "díd iu sî mái kîz é-ni-wêr?" },
+    { en: "I didn't buy anything at the store.", pt: "Eu não comprei nada na loja.", pron: "ái dî-dênt bái é-ni-thing ét ðê stôr." },
+    { en: "Did you like the food?", pt: "Você gostou da comida?", pron: "díd iu láik ðê fûd?" },
+    { en: "They didn't show up for the meeting.", pt: "Eles não apareceram na reunião.", pron: "ðêi dî-dênt shôu âp fôr ðê mî-ting." },
+    { en: "What did you say?", pt: "O que você disse?", pron: "uât díd iu sêi?" },
+    { en: "I didn't mean to do that.", pt: "Eu não fiz por mal.", pron: "ái dî-dênt mîn tû dû ðét." },
+    { en: "Did you lock the front door?", pt: "Você trancou a porta da frente?", pron: "díd iu lâc ðê frânt dôr?" },
+    { en: "I will help you with that.", pt: "Eu vou te ajudar com isso.", pron: "ái wûl hêlp iu wîð ðét." },
+    { en: "What will you do tomorrow?", pt: "O que você vai fazer amanhã?", pron: "uât wûl iu dû tu-mó-rôu?" },
+    { en: "I will never give up.", pt: "Eu nunca vou desistir.", pron: "ái wûl né-vêr gîv âp." },
+    { en: "Will you marry me?", pt: "Você quer casar comigo?", pron: "wûl iu mé-ri mî?" },
+    { en: "It will rain later today.", pt: "Vai chover mais tarde hoje.", pron: "ít wûl rêin lêi-têr tu-dêi." },
+    { en: "I will call you back in five minutes.", pt: "Eu te ligo em 5 minutos.", pron: "ái wûl côl iu bêc ên fâiv mî-nûts." },
+    { en: "Everything will be fine.", pt: "Tudo vai ficar bem.", pron: "é-vri-thing wûl bî fáin." },
+    { en: "Will you come to my party?", pt: "Você virá à minha festa?", pron: "wûl iu câm tû mái pâr-ti?" },
+    { en: "I will check it right now.", pt: "Vou verificar agora mesmo.", pron: "ái wûl chéc ít ráit náu." },
+    { en: "She will love this present.", pt: "Ela vai adorar este presente.", pron: "shî wûl lâv ðis pré-zênt." },
+    { en: "We will win this project.", pt: "Vamos vencer este projeto.", pron: "wî wûl wîn ðis pró-djêct." },
+    { en: "Will you help me carry this?", pt: "Me ajuda a carregar isto?", pron: "wûl iu hêlp mî cé-ri ðis?" },
+    { en: "I will always remember this day.", pt: "Sempre me lembrarei deste dia.", pron: "ái wûl ól-uéis ri-mém-bêr ðis dêi." },
+    { en: "They will arrive soon.", pt: "Eles vão chegar em breve.", pron: "ðêi wûl â-ráiv sûn." },
+    { en: "I will never forget your help.", pt: "Nunca esquecerei sua ajuda.", pron: "ái wûl né-vêr fêr-gét yôr hêlp." },
+    { en: "Who will win the game?", pt: "Quem vai ganhar o jogo?", pron: "hû wûl wîn ðê gêim?" }
 ];
 
+/* ==========================================================================
+   CONTROLE DAS ABAS (PALAVRAS vs FRASES)
+   ========================================================================== */
 function mostrarSecao(tipo) {
     const container = document.getElementById("glossario-container");
     const btnPalavras = document.getElementById("btn-tab-palavras");
@@ -606,38 +206,444 @@ function mostrarSecao(tipo) {
     container.innerHTML = "";
 
     if (tipo === 'palavras') {
-        btnPalavras.style.backgroundColor = "#0ea5e9";
-        btnFrases.style.backgroundColor = "#64748b";
+        if(btnPalavras) btnPalavras.style.backgroundColor = "#0ea5e9";
+        if(btnFrases) btnFrases.style.backgroundColor = "#64748b";
 
         listaPalavras.forEach((item, index) => {
-            container.appendChild(criarLinhaItem(index + 1, item.en, item.pt, item.pron));
+            const div = document.createElement("div");
+            div.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px 15px; border-radius: 8px; border: 1px solid #334155; color: #f1f5f9;";
+            div.innerHTML = `
+                <div>
+                    <strong style="color: #ffffff; font-size: 15px;">${index + 1}. ${item.en}</strong> — <span style="color: #cbd5e1;">${item.pt}</span>
+                    <br><small style="color: #38bdf8;">Pronúncia: *${item.pron}*</small>
+                </div>
+                <button onclick="falarTexto('${item.en}')" style="background: #0ea5e9; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">🔊 Ouvir</button>
+            `;
+            container.appendChild(div);
         });
     } else {
-        btnFrases.style.backgroundColor = "#0ea5e9";
-        btnPalavras.style.backgroundColor = "#64748b";
+        if(btnFrases) btnFrases.style.backgroundColor = "#0ea5e9";
+        if(btnPalavras) btnPalavras.style.backgroundColor = "#64748b";
 
         listaFrases.forEach((item, index) => {
-            container.appendChild(criarLinhaItem(index + 1, item.en, item.pt, item.pron));
+            const div = document.createElement("div");
+            div.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px 15px; border-radius: 8px; border: 1px solid #334155; color: #f1f5f9;";
+            div.innerHTML = `
+                <div>
+                    <strong style="color: #ffffff; font-size: 15px;">${index + 1}. ${item.en}</strong>
+                    <br><span style="color: #cbd5e1;">💡 ${item.pt}</span>
+                    <br><small style="color: #38bdf8;">🗣️ *${item.pron}*</small>
+                </div>
+                <button onclick="falarTexto('${item.en}')" style="background: #0ea5e9; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; height: fit-content;">🔊 Ouvir</button>
+            `;
+            container.appendChild(div);
         });
     }
 }
 
-function criarLinhaItem(numero, ingles, portugues, pronuncia) {
-    const row = document.createElement("div");
-    row.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 10px 14px; border-radius: 8px; border: 1px solid #e2e8f0; gap: 10px;";
+document.addEventListener("DOMContentLoaded", () => {
+    mostrarSecao('palavras');
+    loadQuiz();
+});
 
-    const infoDiv = document.createElement("div");
-    infoDiv.innerHTML = `<strong style="color: #0284c7; font-size: 15px;">${numero}. ${ingles}</strong><br><span style="font-size: 13px; color: #475569;">💡 ${portugues}</span><br><span style="font-size: 12px; color: #94a3b8; font-style: italic;">🗣️ ${pronuncia}</span>`;
 
-    const btnOuvir = document.createElement("button");
-    btnOuvir.innerHTML = "🔊 Ouvir";
-    btnOuvir.className = "btn-audio";
-    btnOuvir.style.padding = "8px 12px";
-    btnOuvir.onclick = () => falarTexto(ingles);
+/* ==========================================================================
+   BANCO DE DADOS DO QUIZ INTERATIVO (50 PERGUNTAS)
+   ========================================================================== */
+const questionsDatabase = [
+    {
+        question: "How do you say at US immigration: 'I am staying here for two weeks'?",
+        translation: "Tradução: Como você diz na imigração: 'Estarei aqui por duas semanas'?",
+        options: ["I will live here for two years.", "I am staying here for two weeks.", "I am working at the airport."],
+        correct: 1
+    },
+    {
+        question: "Where is the baggage claim?",
+        translation: "Tradução: Onde fica a retirada de bagagens?",
+        options: ["Where is the baggage claim?", "Where is the bathroom?", "How much is the ticket?"],
+        correct: 0
+    },
+    {
+        question: "An American is lost and you want to say: 'You need to take the subway'?",
+        translation: "Tradução: 'Você precisa pegar o metrô'",
+        options: ["You need to take the subway.", "You bought a new car.", "She loves eating pizza."],
+        correct: 0
+    },
+    {
+        question: "How do you ask for the check in a restaurant in English?",
+        translation: "Tradução: Como pedir a conta em inglês?",
+        options: ["Can I have the menu, please?", "Can I have the check, please?", "Where is the kitchen?"],
+        correct: 1
+    },
+    {
+        question: "In an interview, how to talk about your experience: 'I worked with web development for three years'?",
+        translation: "Tradução: 'Eu trabalhei com desenvolvimento web por três anos'",
+        options: ["I will work at home tomorrow.", "I worked with web development for three years.", "I never touch a computer."],
+        correct: 1
+    },
+    {
+        question: "How do you ask someone what they do for a living?",
+        translation: "Tradução: Como você pergunta com o que a pessoa trabalha?",
+        options: ["What do you do for a living?", "Where do you live?", "Do you like water?"],
+        correct: 0
+    },
+    {
+        question: "How do you say 'Eu não entendo esta palavra' in English?",
+        translation: "Tradução: Como dizer 'Eu não entendo esta palavra'?",
+        options: ["I know this word very well.", "I don't understand this word.", "What does this mean?"],
+        correct: 1
+    },
+    {
+        question: "What is the correct translation for: 'What time do you wake up?'",
+        translation: "Tradução: Qual a tradução correta para 'What time do you wake up?'?",
+        options: ["Que horas você dorme?", "Que horas você acorda?", "Quanto tempo você tem?"],
+        correct: 1
+    },
+    {
+        question: "How do you say 'Você gosta de café?' in English?",
+        translation: "Tradução: Como dizer 'Você gosta de café?'",
+        options: ["Do you want some water?", "Do you like coffee?", "Where is the coffee shop?"],
+        correct: 1
+    },
+    {
+        question: "How do you say 'Eu não tenho tempo hoje'?",
+        translation: "Tradução: Como dizer 'Eu não tenho tempo hoje'?",
+        options: ["I have a lot of time today.", "I don't have time today.", "Tomorrow is a new day."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'Como se escreve seu nome?' in English?",
+        translation: "Tradução: Como perguntar 'Como se escreve seu nome?'?",
+        options: ["What is your name?", "How do you spell your name?", "Where are you from?"],
+        correct: 1
+    },
+    {
+        question: "How do you say 'Você sabe a resposta?'",
+        translation: "Tradução: Como dizer 'Você sabe a resposta?'",
+        options: ["Do you know the answer?", "Did you find the solution?", "What is the question?"],
+        correct: 0
+    },
+    {
+        question: "What does 'I don't know what to do' mean in Portuguese?",
+        translation: "Tradução: O que significa 'I don't know what to do' em português?",
+        options: ["Eu sei o que fazer.", "Eu não sei o que fazer.", "Eu não quero fazer isso."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'Você precisa de ajuda?' in English?",
+        translation: "Tradução: Como perguntar 'Você precisa de ajuda?'",
+        options: ["Can you help me?", "Do you need any help?", "Where is the help desk?"],
+        correct: 1
+    },
+    {
+        question: "What is the meaning of 'I don't remember his name'?",
+        translation: "Tradução: Qual o significado de 'I don't remember his name'?",
+        options: ["Eu não me lembro do nome dele.", "Eu esqueci onde ele mora.", "Eu não conheço esse homem."],
+        correct: 0
+    },
+    {
+        question: "How do you ask 'Onde você quer ir?' in English?",
+        translation: "Tradução: Como perguntar 'Onde você quer ir?'",
+        options: ["Where did you go?", "Where do you want to go?", "How can I get there?"],
+        correct: 1
+    },
+    {
+        question: "How do you say 'Você tem alguma dúvida / pergunta?'?",
+        translation: "Tradução: Como dizer 'Você tem alguma dúvida?'",
+        options: ["Do you have any questions?", "Is everything clear?", "What is your problem?"],
+        correct: 0
+    },
+    {
+        question: "What does 'I don't care about that' mean?",
+        translation: "Tradução: O que significa 'I don't care about that'?",
+        options: ["Eu me importo muito com isso.", "Eu não me importo com isso.", "Eu não sei de nada."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'O que você acha disso?' in English?",
+        translation: "Tradução: Como perguntar 'O que você acha disso?'",
+        options: ["What do you think about this?", "How do you feel today?", "Why did you do that?"],
+        correct: 0
+    },
+    {
+        question: "How do you say 'O que você fez ontem?' in English?",
+        translation: "Tradução: Como dizer 'O que você fez ontem?'",
+        options: ["What will you do tomorrow?", "What did you do yesterday?", "What are you doing now?"],
+        correct: 1
+    },
+    {
+        question: "What is the translation of 'Where did you go last night?'",
+        translation: "Tradução: Qual a tradução de 'Where did you go last night?'?",
+        options: ["Onde você foi ontem à noite?", "Onde você vai amanhã?", "O que você fez no fim de semana?"],
+        correct: 0
+    },
+    {
+        question: "How do you say 'Eu não dormi bem noite passada'?",
+        translation: "Tradução: Como dizer 'Eu não dormi bem noite passada'?",
+        options: ["I sleep very well every night.", "I didn't sleep well last night.", "I woke up early today."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'Você curtiu o filme?' in English?",
+        translation: "Tradução: Como perguntar 'Você curtiu o filme?'",
+        options: ["Did you enjoy the movie?", "Do you like watching TV?", "Was the theater good?"],
+        correct: 0
+    },
+    {
+        question: "What does 'She didn't call me back' mean?",
+        translation: "Tradução: O que significa 'She didn't call me back'?",
+        options: ["Ela vai me ligar mais tarde.", "Ela não me ligou de volta.", "Ela atendeu o telefone."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'Que horas você chegou?' in English?",
+        translation: "Tradução: Como perguntar 'Que horas você chegou?'",
+        options: ["What time did you leave?", "What time did you arrive?", "When are you coming back?"],
+        correct: 1
+    },
+    {
+        question: "How do you say 'Eu não entendi a pergunta'?",
+        translation: "Tradução: Como dizer 'Eu não entendi a pergunta'?",
+        options: ["I didn't understand the question.", "I know the answer.", "Please repeat the word."],
+        correct: 0
+    },
+    {
+        question: "How do you ask 'Você terminou seu dever / trabalho?'?",
+        translation: "Tradução: Como perguntar 'Você terminou seu dever?'",
+        options: ["Did you finish your homework?", "Are you working right now?", "Where is your project?"],
+        correct: 0
+    },
+    {
+        question: "What does 'He didn't want to talk about it' mean?",
+        translation: "Tradução: O que significa 'He didn't want to talk about it'?",
+        options: ["Ele quis falar sobre o assunto.", "Ele não quis falar sobre isso.", "Ele não sabe de nada."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'Você viu minhas chaves?' in English?",
+        translation: "Tradução: Como perguntar 'Você viu minhas chaves?'",
+        options: ["Did you see my keys anywhere?", "Where is my car?", "Can you find my bag?"],
+        correct: 0
+    },
+    {
+        question: "How do you say 'Eu não comprei nada na loja'?",
+        translation: "Tradução: Como dizer 'Eu não comprei nada na loja'?",
+        options: ["I bought everything at the store.", "I didn't buy anything at the store.", "The store is closed."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'Você gostou da comida?' in English?",
+        translation: "Tradução: Como perguntar 'Você gostou da comida?'",
+        options: ["Did you like the food?", "Is the restaurant good?", "What do you want to eat?"],
+        correct: 0
+    },
+    {
+        question: "What does 'They didn't show up for the meeting' mean?",
+        translation: "Tradução: O que significa 'They didn't show up for the meeting'?",
+        options: ["Eles chegaram cedo para a reunião.", "Eles não apareceram na reunião.", "Eles cancelaram o projeto."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'O que você disse?' em inglês?",
+        translation: "Tradução: Como perguntar 'O que você disse?'",
+        options: ["What did you say?", "Who are you talking to?", "Can you speak louder?"],
+        correct: 0
+    },
+    {
+        question: "What does 'I didn't mean to do that' mean?",
+        translation: "Tradução: O que significa 'I didn't mean to do that'?",
+        options: ["Eu fiz isso de propósito.", "Eu não fiz por mal / não foi minha intenção.", "Eu esqueci como faz."],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'Você trancou a porta da frente?'?",
+        translation: "Tradução: Como perguntar 'Você trancou a porta da frente?'",
+        options: ["Did you lock the front door?", "Where is the house key?", "Is the window open?"],
+        correct: 0
+    },
+    {
+        question: "How do you say 'Eu vou te ajudar com isso' (usando WILL)?",
+        translation: "Tradução: Como dizer 'Eu vou te ajudar com isso'?",
+        options: ["I helped you yesterday.", "I will help you with that.", "Do you need help?"],
+        correct: 1
+    },
+    {
+        question: "How do you ask 'O que você vai fazer amanhã?'?",
+        translation: "Tradução: Como perguntar 'O que você vai fazer amanhã?'",
+        options: ["What did you do yesterday?", "What will you do tomorrow?", "What are you doing now?"],
+        correct: 1
+    },
+    {
+        question: "What does 'I will never give up' mean?",
+        translation: "Tradução: O que significa 'I will never give up'?",
+        options: ["Eu nunca vou desistir.", "Eu sempre vou tentar mudar.", "Eu desisto de tudo."],
+        correct: 0
+    },
+    {
+        question: "How do you propose marriage in English?",
+        translation: "Tradução: Como você faz um pedido de casamento em inglês?",
+        options: ["Will you marry me?", "Do you love me?", "Let's live together?"],
+        correct: 0
+    },
+    {
+        question: "How do you say 'Vai chover mais tarde hoje'?",
+        translation: "Tradução: Como dizer 'Vai chover mais tarde hoje'?",
+        options: ["It was sunny yesterday.", "It will rain later today.", "The weather is very hot."],
+        correct: 1
+    },
+    {
+        question: "How do you say 'Eu te ligo em 5 minutos'?",
+        translation: "Tradução: Como dizer 'Eu te ligo em 5 minutos'?",
+        options: ["I will call you back in five minutes.", "Call me later today.", "See you in five minutes."],
+        correct: 0
+    },
+    {
+        question: "What does 'Everything will be fine' mean?",
+        translation: "Tradução: O que significa 'Everything will be fine'?",
+        options: ["Tudo vai ficar bem.", "Nada está funcionando.", "O problema foi resolvido."],
+        correct: 0
+    },
+    {
+        question: "How do you invite someone: 'Você virá à minha festa?'?",
+        translation: "Tradução: Como convidar alguém: 'Você virá à minha festa?'",
+        options: ["Will you come to my party?", "Did you go to the party?", "Do you like parties?"],
+        correct: 0
+    },
+    {
+        question: "How do you say 'Vou verificar agora mesmo'?",
+        translation: "Tradução: Como dizer 'Vou verificar agora mesmo'?",
+        options: ["I will check it right now.", "I checked it yesterday.", "Let's wait for tomorrow."],
+        correct: 0
+    },
+    {
+        question: "What does 'She will love this present' mean?",
+        translation: "Tradução: O que significa 'She will love this present'?",
+        options: ["Ela comprou um presente.", "Ela vai adorar este presente.", "Ela não gostou da surpresa."],
+        correct: 1
+    },
+    {
+        question: "How do you say 'Vamos vencer este projeto'?",
+        translation: "Tradução: Como dizer 'Vamos vencer este projeto'?",
+        options: ["We will win this project.", "The project is finished.", "I hate this job."],
+        correct: 0
+    },
+    {
+        question: "How do you ask 'Me ajuda a carregar isto?' in English?",
+        translation: "Tradução: Como perguntar 'Me ajuda a carregar isto?'",
+        options: ["Will you help me carry this?", "Can you open the box?", "Where is my bag?"],
+        correct: 0
+    },
+    {
+        question: "What does 'I will always remember this day' mean?",
+        translation: "Tradução: O que significa 'I will always remember this day'?",
+        options: ["Sempre me lembrarei deste dia.", "Eu esqueci o que aconteceu.", "Hoje é um dia ruim."],
+        correct: 0
+    },
+    {
+        question: "How do you say 'Eles vão chegar em breve'?",
+        translation: "Tradução: Como dizer 'Eles vão chegar em breve'?",
+        options: ["They left early.", "They will arrive soon.", "They are already here."],
+        correct: 1
+    },
+    {
+        question: "What does 'Who will win the game?' mean?",
+        translation: "Tradução: O que significa 'Who will win the game?'?",
+        options: ["Quem perdeu o jogo?", "Quem vai ganhar o jogo?", "Quando começa a partida?"],
+        correct: 1
+    }
+];
 
-    row.appendChild(infoDiv);
-    row.appendChild(btnOuvir);
-    return row;
+let currentQuestionIndex = 0;
+
+const questionText = document.getElementById("question-text");
+const translationBox = document.getElementById("translation-box");
+const optionsBox = document.getElementById("options-box");
+const quizContainer = document.getElementById("quiz-container");
+const resultBox = document.getElementById("result-box");
+const feedbackText = document.getElementById("feedback-text");
+
+function loadQuiz() {
+    if (currentQuestionIndex < questionsDatabase.length) {
+        const currentData = questionsDatabase[currentQuestionIndex];
+        
+        questionText.innerHTML = `
+            <div style="margin-bottom: 12px; font-weight: 500; font-size: 16px;">
+                Questão ${currentQuestionIndex + 1} de ${questionsDatabase.length}: ${currentData.question}
+            </div>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button onclick="falarTexto('${currentData.question.replace(/'/g, "\\'")}')" style="background: #0ea5e9; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;">🔊 Ouvir Pergunta</button>
+                <button onclick="toggleTranslation()" style="background: #334155; color: #cbd5e1; border: 1px solid #475569; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;">💡 Tradução</button>
+            </div>
+        `;
+        
+        translationBox.innerText = currentData.translation;
+        translationBox.className = "translation-hidden";
+        translationBox.style.display = "none";
+        
+        optionsBox.innerHTML = "";
+        
+        currentData.options.forEach((optionText, index) => {
+            const wrapperDiv = document.createElement("div");
+            wrapperDiv.style.cssText = "display: flex; align-items: center; justify-content: space-between; background: #334155; margin: 8px 0; padding: 8px 12px; border-radius: 6px; border: 1px solid #475569;";
+            
+            const btnOption = document.createElement("button");
+            btnOption.innerText = optionText;
+            btnOption.style.cssText = "background: transparent; color: #ffffff; border: none; cursor: pointer; text-align: left; font-size: 14px; flex-grow: 1;";
+            btnOption.onclick = () => checkAnswer(index, currentData.correct);
+            
+            const btnAudio = document.createElement("button");
+            btnAudio.innerHTML = "🔊 Ouvir";
+            btnAudio.style.cssText = "background: #0ea5e9; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 10px;";
+            btnAudio.onclick = (e) => {
+                e.stopPropagation();
+                falarTexto(optionText);
+            };
+
+            wrapperDiv.appendChild(btnOption);
+            wrapperDiv.appendChild(btnAudio);
+            optionsBox.appendChild(wrapperDiv);
+        });
+
+        quizContainer.classList.remove("hidden");
+        resultBox.classList.add("hidden");
+    } else {
+        quizContainer.innerHTML = "🎉 <strong>Parabéns!</strong> Você completou todas as 50 perguntas do quiz!";
+        resultBox.classList.add("hidden");
+    }
 }
 
-mostrarSecao('palavras');
+function toggleTranslation() {
+    if (translationBox.style.display === "none" || translationBox.classList.contains("translation-hidden")) {
+        translationBox.classList.remove("translation-hidden");
+        translationBox.classList.add("translation-visible");
+        translationBox.style.display = "block";
+        translationBox.style.background = "#1e293b";
+        translationBox.style.padding = "10px";
+        translationBox.style.borderRadius = "6px";
+        translationBox.style.border = "1px solid #334155";
+        translationBox.style.color = "#38bdf8";
+        translationBox.style.marginTop = "10px";
+    } else {
+        translationBox.classList.remove("translation-visible");
+        translationBox.classList.add("translation-hidden");
+        translationBox.style.display = "none";
+    }
+}
+
+function checkAnswer(selectedIndex, correctIndex) {
+    quizContainer.classList.add("hidden");
+    resultBox.classList.remove("hidden");
+
+    if (selectedIndex === correctIndex) {
+        feedbackText.innerText = "✅ Correto! Excelente aprendizado!";
+        feedbackText.style.color = "#4ade80";
+    } else {
+        feedbackText.innerText = "❌ Ops! Errado. Tente novamente na próxima.";
+        feedbackText.style.color = "#f87171";
+    }
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    loadQuiz();
+}
