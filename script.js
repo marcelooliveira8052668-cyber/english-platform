@@ -195,9 +195,6 @@ const listaFrases = [
     { en: "Who will win the game?", pt: "Quem vai ganhar o jogo?", pron: "hû wûl wîn ðê gêim?" }
 ];
 
-/* ==========================================================================
-   CONTROLE DAS ABAS (PALAVRAS vs FRASES)
-   ========================================================================== */
 function mostrarSecao(tipo) {
     const container = document.getElementById("glossario-container");
     const btnPalavras = document.getElementById("btn-tab-palavras");
@@ -211,14 +208,22 @@ function mostrarSecao(tipo) {
 
         listaPalavras.forEach((item, index) => {
             const div = document.createElement("div");
-            div.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px 15px; border-radius: 8px; border: 1px solid #334155; color: #f1f5f9;";
+            div.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px 15px; border-radius: 8px; border: 1px solid #334155; color: #f1f5f9; margin-bottom: 8px;";
+            
             div.innerHTML = `
-                <div>
+                <div style="padding-right: 10px;">
                     <strong style="color: #ffffff; font-size: 15px;">${index + 1}. ${item.en}</strong> — <span style="color: #cbd5e1;">${item.pt}</span>
                     <br><small style="color: #38bdf8;">Pronúncia: *${item.pron}*</small>
                 </div>
-                <button onclick="falarTexto('${item.en}')" style="background: #0ea5e9; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">🔊 Ouvir</button>
             `;
+
+            const btnAudio = document.createElement("button");
+            btnAudio.innerText = "🔊 Ouvir";
+            btnAudio.style.cssText = "background: #0ea5e9; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; white-space: nowrap;";
+            
+            btnAudio.onclick = () => falarTexto(item.en);
+
+            div.appendChild(btnAudio);
             container.appendChild(div);
         });
     } else {
@@ -227,25 +232,27 @@ function mostrarSecao(tipo) {
 
         listaFrases.forEach((item, index) => {
             const div = document.createElement("div");
-            div.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px 15px; border-radius: 8px; border: 1px solid #334155; color: #f1f5f9;";
+            div.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px 15px; border-radius: 8px; border: 1px solid #334155; color: #f1f5f9; margin-bottom: 8px;";
+            
             div.innerHTML = `
-                <div>
+                <div style="padding-right: 10px;">
                     <strong style="color: #ffffff; font-size: 15px;">${index + 1}. ${item.en}</strong>
                     <br><span style="color: #cbd5e1;">💡 ${item.pt}</span>
                     <br><small style="color: #38bdf8;">🗣️ *${item.pron}*</small>
                 </div>
-                <button onclick="falarTexto('${item.en}')" style="background: #0ea5e9; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; height: fit-content;">🔊 Ouvir</button>
             `;
+
+            const btnAudio = document.createElement("button");
+            btnAudio.innerText = "🔊 Ouvir";
+            btnAudio.style.cssText = "background: #0ea5e9; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; white-space: nowrap; height: fit-content;";
+            
+            btnAudio.onclick = () => falarTexto(item.en);
+
+            div.appendChild(btnAudio);
             container.appendChild(div);
         });
     }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    mostrarSecao('palavras');
-    loadQuiz();
-});
-
 
 /* ==========================================================================
    BANCO DE DADOS DO QUIZ INTERATIVO (50 PERGUNTAS)
@@ -585,65 +592,65 @@ function loadQuiz() {
         currentData.options.forEach((optionText, index) => {
             const wrapperDiv = document.createElement("div");
             wrapperDiv.style.cssText = "display: flex; align-items: center; justify-content: space-between; background: #334155; margin: 8px 0; padding: 8px 12px; border-radius: 6px; border: 1px solid #475569;";
-            
+
             const btnOption = document.createElement("button");
             btnOption.innerText = optionText;
-            btnOption.style.cssText = "background: transparent; color: #ffffff; border: none; cursor: pointer; text-align: left; font-size: 14px; flex-grow: 1;";
-            btnOption.onclick = () => checkAnswer(index, currentData.correct);
-            
-            const btnAudio = document.createElement("button");
-            btnAudio.innerHTML = "🔊 Ouvir";
-            btnAudio.style.cssText = "background: #0ea5e9; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 10px;";
-            btnAudio.onclick = (e) => {
+            btnOption.style.cssText = "background: transparent; color: #f1f5f9; border: none; text-align: left; cursor: pointer; font-size: 14px; flex-grow: 1; padding: 4px;";
+            btnOption.onclick = () => selectOption(index);
+
+            const btnOuvirOpt = document.createElement("button");
+            btnOuvirOpt.innerText = "🔊";
+            btnOuvirOpt.title = "Ouvir opção";
+            btnOuvirOpt.style.cssText = "background: #0ea5e9; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 8px;";
+            btnOuvirOpt.onclick = (e) => {
                 e.stopPropagation();
                 falarTexto(optionText);
             };
 
             wrapperDiv.appendChild(btnOption);
-            wrapperDiv.appendChild(btnAudio);
+            wrapperDiv.appendChild(btnOuvirOpt);
             optionsBox.appendChild(wrapperDiv);
         });
 
-        quizContainer.classList.remove("hidden");
-        resultBox.classList.add("hidden");
+        if (resultBox) resultBox.style.display = "none";
     } else {
-        quizContainer.innerHTML = "🎉 <strong>Parabéns!</strong> Você completou todas as 50 perguntas do quiz!";
-        resultBox.classList.add("hidden");
+        if (questionText) questionText.innerHTML = "<h3>Parabéns! Você concluiu todas as 50 questões do quiz.</h3>";
+        if (optionsBox) optionsBox.innerHTML = "";
+        if (translationBox) translationBox.style.display = "none";
+        if (resultBox) resultBox.style.display = "block";
+        if (feedbackText) feedbackText.innerText = "Excelente trabalho praticando o inglês!";
     }
 }
 
 function toggleTranslation() {
-    if (translationBox.style.display === "none" || translationBox.classList.contains("translation-hidden")) {
-        translationBox.classList.remove("translation-hidden");
-        translationBox.classList.add("translation-visible");
-        translationBox.style.display = "block";
-        translationBox.style.background = "#1e293b";
-        translationBox.style.padding = "10px";
-        translationBox.style.borderRadius = "6px";
-        translationBox.style.border = "1px solid #334155";
-        translationBox.style.color = "#38bdf8";
-        translationBox.style.marginTop = "10px";
-    } else {
-        translationBox.classList.remove("translation-visible");
-        translationBox.classList.add("translation-hidden");
-        translationBox.style.display = "none";
+    if (translationBox) {
+        if (translationBox.style.display === "none") {
+            translationBox.style.display = "block";
+        } else {
+            translationBox.style.display = "none";
+        }
     }
 }
 
-function checkAnswer(selectedIndex, correctIndex) {
-    quizContainer.classList.add("hidden");
-    resultBox.classList.remove("hidden");
+function selectOption(selectedIndex) {
+    const currentData = questionsDatabase[currentQuestionIndex];
+    const optionDivs = optionsBox.children;
 
-    if (selectedIndex === correctIndex) {
-        feedbackText.innerText = "✅ Correto! Excelente aprendizado!";
-        feedbackText.style.color = "#4ade80";
-    } else {
-        feedbackText.innerText = "❌ Ops! Errado. Tente novamente na próxima.";
-        feedbackText.style.color = "#f87171";
+    for (let i = 0; i < optionDivs.length; i++) {
+        const btn = optionDivs[i].querySelector("button");
+        if (i === currentData.correct) {
+            optionDivs[i].style.background = "#15803d"; // Verde para a correta
+        } else if (i === selectedIndex) {
+            optionDivs[i].style.background = "#b91c1c"; // Vermelho se errar
+        }
+        if (btn) btn.disabled = true;
     }
+
+    setTimeout(() => {
+        currentQuestionIndex++;
+        loadQuiz();
+    }, 1500);
 }
 
-function nextQuestion() {
-    currentQuestionIndex++;
-    loadQuiz();
-}
+// Inicia o quiz automaticamente
+loadQuiz();
